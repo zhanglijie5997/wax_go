@@ -65,19 +65,17 @@ func Sql()  {
 		fmt.Println("db connecting success.")
 		// 测试sql
 		db.Table("users").Session(&gorm.Session{QueryFields: true}).Find(&user)
-		if user != nil {
-			fmt.Println("user ---->>>> ",len(user) )
-			for _,v := range user {
-				fmt.Println("name -->>>",  v.Name)
-				fmt.Println("sex -->>>",  v.Id)
-				fmt.Println("id -->>>",  v.Sex)
-			}
-		}else {
-			fmt.Println("查询错误 --->>> ")
-		}
-
+		//if user != nil {
+		//	fmt.Println("user ---->>>> ",len(user) )
+		//	for _,v := range user {
+		//		fmt.Println("name -->>>",  v.Name)
+		//		fmt.Println("sex -->>>",  v.Id)
+		//		fmt.Println("id -->>>",  v.Sex)
+		//	}
+		//}else {
+		//	fmt.Println("查询错误 --->>> ")
+		//}
 		fmt.Println(order, len(order))
-
 		DB = db
 	}
 }

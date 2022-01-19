@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"go_study/config"
-	"go_study/config/route_config"
+	"go_study/config/auth_config"
 	"go_study/model"
 	"go_study/sql"
 	"go_study/utils"
@@ -27,10 +27,7 @@ func SetDBMiddleware(next *gin.Context)  {
 		return
 	}
 	// 需要登录的接口
-	_auth := []string{
-		route_config.WaxRelation, route_config.WaxRelationUpdate,
-		//route_config.HomeApi, route_config.LoginApi, route_config.Register,
-	}
+	_auth := auth_config.Auth()
 	_token := next.Request.Header.Get("token")
 	_path := next.Request.URL.Path
 	if _token != "" && IsContain(_auth, _path){
