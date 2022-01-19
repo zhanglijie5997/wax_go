@@ -1,0 +1,19 @@
+name: "go_study"
+service:
+  AppMode: "debug"
+  HttpPort: "3000"
+mysql:
+  Db: "mysql"
+  DbHost: "127.0.0.1"                              # mysql ip
+  DbPort: "3306"                              # mysql port
+  DbUser: "root"                              # mysql user
+  DbPassword: "123456"                        # mysql password
+  DbName: "test_sql"                          # mysql name
+redis:
+  Address: "127.0.0.1:6379"
+  Password: "Zhang1996"
+web3:
+  debug:
+    Address: "0x314159265dD8dbb310642f98f50C066173C1259b"
+    HttpUrl: "https://mainnet.infura.io/v3/615d24aa5618458c80c3a8192a998c67"
+
