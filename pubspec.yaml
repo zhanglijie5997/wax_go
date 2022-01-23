@@ -9,6 +9,8 @@ mysql:
   DbUser: "root"                              # mysql user
   DbPassword: "123456"                        # mysql password
   DbName: "test_sql"                          # mysql name
+  Create: 1                                  # 1 重新生成账号 0 不生成
+  CreatePath: "/static/account.txt"          # 创建账号路径
 redis:
   Address: "127.0.0.1:6379"
   Password: "Zhang1996"

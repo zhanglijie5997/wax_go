@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"go_study/config"
 	"go_study/model"
+	"go_study/model/http_model"
 	"go_study/sql"
 	"go_study/utils"
 	"net/http"
@@ -20,23 +21,23 @@ func Register(c *gin.Context)  {
 	email := c.PostForm("email")
 	password := c.PostForm("password")
 	if email == "" {
-		 c.JSON(http.StatusOK, gin.H{
-			"code": config.EmailIsNotValidated,
-			"message": "email is not validated",
-		})
+		 c.JSON(http.StatusOK, http_model.HttpModel{
+			 Code: config.EmailIsNotValidated,
+			 Message: "email is not validated",
+		 })
 	}else if password == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"code": config.PasswordIsNotValidate,
-			"message": "password is not validated",
-		})
+		c.JSON(http.StatusOK, http_model.HttpModel{
+			Code: config.PasswordIsNotValidate,
+			Message: "password is not validated",
+		} )
 	}else if email != "" && password != "" {
 		if emailRange != nil {
 			_emailList := emailRange.FindAllString(email, -1)
 			_len := len(_emailList)
 			if _len == 0  {
-				c.JSON(http.StatusOK, gin.H{
-					"code": config.EmailIsNotValidated,
-					"message": "email is not validated",
+				c.JSON(http.StatusOK, http_model.HttpModel{
+					Code: config.EmailIsNotValidated,
+					Message: "email is not validated",
 				})
 			}else {
 				_uuid := uuid.New().String()
@@ -59,10 +60,10 @@ func Register(c *gin.Context)  {
 				    res := sql.DB.Table("users").Create(&user)
 
 					if res.Error == nil {
-						c.JSON(http.StatusOK, gin.H{
-							"code": config.Success,
-							"message": "register success",
-							"data": model.UserMsg{
+						c.JSON(http.StatusOK, http_model.HttpModel{
+							Code: config.Success,
+							Message:  "register success",
+							Data: model.UserMsg{
 								Email: email,
 								Sex:   1,
 								Id: strconv.Itoa(user.ID),
@@ -72,26 +73,26 @@ func Register(c *gin.Context)  {
 							},
 						})
 					}else {
-						c.JSON(http.StatusOK, gin.H{
-							"code": config.RegisterFailed,
-							"message": "register failed",
-							"data": res.Error,
+						c.JSON(http.StatusOK, http_model.HttpModel{
+							Code: config.RegisterFailed,
+							Message: "register failed",
+							Data: res.Error,
 						})
 					}
 
 				}else  {
 					fmt.Println(userFind)
-					c.JSON(http.StatusOK, gin.H{
-						"code": config.IsRegistered,
-						"message": "email is registed",
-					})
+					c.JSON(http.StatusOK, http_model.HttpModel{
+						Code: config.IsRegistered,
+						Message: "email is registed",
+					} )
 				}
 
 			}
 		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"code": config.EmailIsRegister,
-				"message": "email is register",
+			c.JSON(http.StatusOK, http_model.HttpModel{
+				Code: config.EmailIsRegister,
+				Message:  "email is register",
 			})
 		}
 	}

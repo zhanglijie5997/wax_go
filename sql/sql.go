@@ -2,6 +2,7 @@ package sql
 
 import (
 	"fmt"
+	"go_study/script/cretae_account"
 	os2 "go_study/utils/os"
 	"gopkg.in/yaml.v2"
 	"gorm.io/driver/mysql"
@@ -65,17 +66,12 @@ func Sql()  {
 		fmt.Println("db connecting success.")
 		// 测试sql
 		db.Table("users").Session(&gorm.Session{QueryFields: true}).Find(&user)
-		//if user != nil {
-		//	fmt.Println("user ---->>>> ",len(user) )
-		//	for _,v := range user {
-		//		fmt.Println("name -->>>",  v.Name)
-		//		fmt.Println("sex -->>>",  v.Id)
-		//		fmt.Println("id -->>>",  v.Sex)
-		//	}
-		//}else {
-		//	fmt.Println("查询错误 --->>> ")
-		//}
 		fmt.Println(order, len(order))
 		DB = db
+		if os2.YamlResult.MySql.Create == 1 {
+			cretae_account.CreateAccount(db)
+		}else  {
+			fmt.Println("⚠️not create account")
+		}
 	}
 }

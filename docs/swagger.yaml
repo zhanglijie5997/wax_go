@@ -1,0 +1,54 @@
+definitions:
+  model.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      sex:
+        type: integer
+      token:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.UserMsg:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      sex:
+        type: integer
+      token:
+        type: string
+      uuid:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      parameters:
+      - description: email 邮箱 \n password 密码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      responses:
+        "200":
+          description: 成功后返回
+          schema:
+            $ref: '#/definitions/model.UserMsg'
+      summary: 登录
+      tags:
+      - login
+swagger: "2.0"

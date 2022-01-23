@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"go_study/model/wax_model"
+	os2 "go_study/utils/os"
 	"gorm.io/gorm"
 	"os"
 	"strings"
@@ -12,9 +13,10 @@ import (
 
 
 func CreateAccount(db *gorm.DB) {
+	_ymal := os2.YamlResult
 	_path, err := os.Getwd()
 	if err == nil {
-		_path += "/static/account.txt"
+		_path += _ymal.MySql.CreatePath
 	}
 	accountTet, err := os.ReadFile(_path)
 	if err == nil {

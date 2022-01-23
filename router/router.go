@@ -2,11 +2,14 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go_study/api/index"
 	"go_study/api/login"
 	register2 "go_study/api/register"
 	"go_study/api/wax_list"
 	"go_study/api/wax_relation"
+	"go_study/api/wax_relation_create"
 	"go_study/api/wax_relation_update"
 	"go_study/config"
 	"go_study/config/route_config"
@@ -53,9 +56,18 @@ func Router()  {
 
 	// 查询账号关联wax账号
 	r.GET(route_config.WaxList, wax_list.WaxList)
-	r.POST(route_config.WaxList, wax_list.WaxList)
-	r.PUT(route_config.WaxList, wax_list.WaxList)
-	r.DELETE(route_config.WaxList, wax_list.WaxList)
+	r.POST(route_config.WaxList, config.ErrMethods)
+	r.PUT(route_config.WaxList, config.ErrMethods)
+	r.DELETE(route_config.WaxList, config.ErrMethods)
+
+	// 创建wax账号
+	r.POST(route_config.WaxRelationCreate, wax_relation_create.WaxRelationCreate)
+	r.GET(route_config.WaxRelationCreate, config.ErrMethods)
+	r.PUT(route_config.WaxRelationCreate, config.ErrMethods)
+	r.DELETE(route_config.WaxRelationCreate, config.ErrMethods)
+
+	//swagger
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.Run(":6000")
 }

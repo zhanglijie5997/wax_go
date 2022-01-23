@@ -19,6 +19,8 @@ type MySql struct {
 	DbPassword  string `yaml:"DbPassword"`
 	DbName		string `yaml:"DbName"`
 	DbUser		string `yaml:"DbUser"`
+	Create 		int 	`yaml:"Create"`
+	CreatePath  string  `yaml:"CreatePath"`
 }
 
 type Redis struct {

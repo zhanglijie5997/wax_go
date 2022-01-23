@@ -11,3 +11,9 @@ type HttpError struct {
 	Data interface{} 	`json:"data"`
 	Message string		`json:"message"`
 }
+
+type HttpModel struct {
+	Code int 			`json:"code"`
+	Data interface{} 	`json:"data"`
+	Message string		`json:"message"`
+}

@@ -5,6 +5,7 @@ import (
 	"go_study/config"
 	"go_study/config/auth_config"
 	"go_study/model"
+	"go_study/model/http_model"
 	"go_study/sql"
 	"go_study/utils"
 	"net/http"
@@ -34,9 +35,9 @@ func SetDBMiddleware(next *gin.Context)  {
 		var _userMsg model.UserMsg
 	 	_sqlRes := sql.DB.Table("users").Where("token = ?", _token).First(&_userMsg)
 		if _sqlRes.Error != nil {
-			next.JSON(http.StatusOK, gin.H{
-				"code": config.NeedLogin,
-				"message": "Please login first",
+			next.JSON(http.StatusOK, http_model.HttpModel{
+				Code: config.NeedLogin,
+				Message: "Please login first",
 			})
 			// 未登录，直接中断请求
 			next.Abort()
@@ -46,35 +47,34 @@ func SetDBMiddleware(next *gin.Context)  {
 				// 判断token是否过期
 				_t, err := utils.ParseToken(_token)
 				if err != nil {
-					next.JSON(http.StatusOK, gin.H{
-						"code": config.TokenExpired,
-						"message": "Token Resolution failure",
+					next.JSON(http.StatusOK, http_model.HttpModel{
+						Code: config.TokenExpired,
+						Message: "Token Resolution failure",
 					})
+					next.Abort()
 					//panic(err)
 				}else {
 					if time.Now().Unix() > _t.ExpiresAt {
-						next.JSON(http.StatusOK, gin.H{
-							"code": config.TokenExpired,
-							"message": "token is expired",
-						})
+						next.JSON(http.StatusOK, http_model.HttpModel{
+							Code:  config.TokenExpired,
+							Message:  "token is expired",
+						} )
+						next.Abort()
 						//panic("token is expired")
+					}else  {
+						next.Next()
 					}
-
-					next.Next()
 				}
 			}else {
-				next.JSON(http.StatusOK, gin.H{
-					"code": config.NeedLogin,
-					"message": "Log on first",
-				})
+				next.JSON(http.StatusOK, http_model.HttpModel{
+					Code: config.NeedLogin,
+					Message: "Log on first",
+				} )
 				// 未登录，直接中断请求
 				next.Abort()
 			}
 
 		}
-
-
-
 	}else  {
 		next.Next()
 	}

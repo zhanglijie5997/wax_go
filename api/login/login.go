@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go_study/config"
 	"go_study/model"
+	"go_study/model/http_model"
 	"go_study/sql"
 	"go_study/utils"
 	"gorm.io/gorm"
@@ -18,7 +19,15 @@ type LoginData struct {
 	Email     string `form:"email" json:"email" xml:"email"  binding:"required"`
 	Password string `form:"password" json:"password" xml:"password" binding:"required"`
 }
-
+// Login 		function
+// @Summary 	登录
+// @version 	1.0
+// @Tags 		login
+// @Accetp  	json
+// @Product 	json
+// @Param		data body model.User true "email 邮箱 \n password 密码"
+// @Success 	200  object model.UserMsg "成功后返回"
+// @Router 		/login [post]
 func Login(c *gin.Context)  {
 	emailRange := regexp.MustCompile(`(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$`)
 	email := c.PostForm("email")
@@ -44,10 +53,10 @@ func Login(c *gin.Context)  {
 				var user model.User
 				_res := sql.DB.Table("users").First(&user, "email = ?", email)
 				if _res.Error != nil {
-					c.JSON(http.StatusOK, gin.H{
-						"code": config.LoginFailed,
-						"message": "login failed",
-						"data": _res.Error,
+					c.JSON(http.StatusOK, http_model.HttpModel{
+						Code: config.LoginFailed,
+						Message: "login failed",
+						Data: _res.Error,
 					})
 					panic(_res.Error)
 				}else  {
@@ -60,10 +69,10 @@ func Login(c *gin.Context)  {
 					if _result == nil{
 						panic(_result.Error)
 					}else {
-						c.JSON(http.StatusOK, gin.H{
-							"code": config.Success,
-							"message": "login success",
-							"data": model.UserMsg{
+						c.JSON(http.StatusOK, http_model.HttpModel{
+							Code: config.Success,
+							Message: "login success",
+							Data: model.UserMsg{
 								Email: email,
 								Sex:   1,
 								Id:    strconv.Itoa(user.ID),
@@ -75,16 +84,16 @@ func Login(c *gin.Context)  {
 					}
 				}
 			}else {
-				c.JSON(http.StatusOK, gin.H{
-					"code": config.PasswordIsNotValidate,
-					"message": "password is not validate",
-				})
+				c.JSON(http.StatusOK, http_model.HttpModel{
+					Code: config.PasswordIsNotValidate,
+					Message: "password is not validate",
+				} )
 			}
 		}else {
-			c.JSON(http.StatusOK, gin.H{
-				"code": config.IsNotRegister,
-				"message": "email is not register",
-			})
+			c.JSON(http.StatusOK, http_model.HttpModel{
+				Code:  config.IsNotRegister,
+				Message: "email is not register",
+			} )
 		}
 	}
 }

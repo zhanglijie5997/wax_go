@@ -7,4 +7,5 @@ const (
 	WaxRelation = "/wax_relation"
 	WaxRelationUpdate = "/wax_relation_update"
 	WaxList = "/wax_list"
+	WaxRelationCreate = "/wax_relation_create"
 )
